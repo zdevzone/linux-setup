@@ -1,0 +1,40 @@
+# Loaded by all Zsh processes. Keep interactive work in zshrc.
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export LINUX_SETUP_DIR="$XDG_CONFIG_HOME/linux-setup"
+export DEV_SETUP_DIR="$LINUX_SETUP_DIR" # Compatibility for existing private aliases.
+typeset -U path fpath module_path
+path=("$HOME/.local/bin" "$LINUX_SETUP_DIR/bin" $path)
+typeset _dev_uv_dir
+for _dev_uv_dir in "${UV_INSTALL_DIR:-$HOME/.local/bin}" "$HOME/.cargo/bin"; do
+  [[ -x "$_dev_uv_dir/uv" ]] && path+=("$_dev_uv_dir")
+done
+unset _dev_uv_dir
+
+# Zsh's Debian packages can be installed in user space without sudo.
+if [[ -d "$XDG_DATA_HOME/linux-setup/runtime" ]]; then
+  module_path=("$XDG_DATA_HOME/linux-setup/runtime"/usr/lib/{*,}/zsh/*(N/) $module_path)
+  fpath=("$XDG_DATA_HOME/linux-setup/runtime/usr/share/zsh/functions"/*(N/) $fpath)
+fi
+fpath=("$XDG_DATA_HOME/linux-setup/completions" $fpath)
+if [[ -d "$XDG_DATA_HOME/linux-setup/completions/vendor" ]]; then
+  fpath=("$XDG_DATA_HOME/linux-setup/completions/vendor" ${fpath:#/usr/share/zsh/vendor-completions})
+fi
+
+[[ -r "$XDG_CONFIG_HOME/linux-setup-local/zshenv" ]] && source "$XDG_CONFIG_HOME/linux-setup-local/zshenv"
+
+# Load Vite+'s runtime and package-manager shims on every device. Honor a
+# machine-specific hook already loaded above, plus current and legacy layouts.
+if (( ! $+functions[vp] )); then
+  typeset _dev_vp_env
+  for _dev_vp_env in "${VP_HOME:-$XDG_CONFIG_HOME/vite-plus}/env" "$XDG_CONFIG_HOME/vite-plus/env" "$HOME/.vite-plus/env"; do
+    if [[ -r "$_dev_vp_env" ]]; then
+      source "$_dev_vp_env"
+      break
+    fi
+  done
+  unset _dev_vp_env
+fi
+return 0

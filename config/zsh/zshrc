@@ -1,0 +1,72 @@
+[[ -o interactive ]] || return 0
+
+mkdir -p "$XDG_STATE_HOME/zsh" "$XDG_CACHE_HOME/zsh"
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt APPEND_HISTORY INC_APPEND_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS INTERACTIVE_COMMENTS
+bindkey -e
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+
+# A few distributions ship a dangling Docker Desktop completion symlink.
+# A valid completion earlier in fpath avoids errors without modifying /usr.
+autoload -Uz compinit
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+if (( $+commands[uv] )); then
+  eval "$(uv generate-shell-completion zsh)"
+fi
+if (( $+commands[uvx] )); then
+  eval "$(uvx --generate-shell-completion zsh)"
+fi
+
+export BAT_CONFIG_PATH="$LINUX_SETUP_DIR/config/bat/config"
+export RIPGREP_CONFIG_PATH="$LINUX_SETUP_DIR/config/ripgrep/config"
+export LESS='-R'
+# Respect a device's editor choice; do not assume a specific editor is installed.
+export EDITOR="${EDITOR:-vi}"
+export VISUAL="${VISUAL:-$EDITOR}"
+
+if (( $+commands[fd] )); then
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
+fi
+export FZF_DEFAULT_OPTS='--height=60% --layout=reverse --border'
+if (( $+commands[bat] )); then
+  export FZF_CTRL_T_OPTS='--preview "bat --color=always --style=numbers --line-range=:200 -- {}"'
+fi
+if (( $+commands[fzf] )) && [[ -t 0 ]]; then
+  source <(fzf --zsh)
+fi
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
+
+source "$LINUX_SETUP_DIR/config/zsh/aliases.zsh"
+source "$LINUX_SETUP_DIR/config/zsh/functions.zsh"
+
+typeset _dev_plugin_dir="$XDG_DATA_HOME/linux-setup/plugins"
+if [[ -r "$_dev_plugin_dir/zsh-autosuggestions/current/zsh-autosuggestions.zsh" ]]; then
+  ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+  source "$_dev_plugin_dir/zsh-autosuggestions/current/zsh-autosuggestions.zsh"
+fi
+
+if (( $+commands[oh-my-posh] )); then
+  eval "$(oh-my-posh init zsh --config "$LINUX_SETUP_DIR/config/oh-my-posh/quick-term.omp.json")"
+fi
+
+# These stay private to the device. Portable customizations belong in this repo.
+[[ -r "$XDG_CONFIG_HOME/linux-setup-local/zshrc" ]] && source "$XDG_CONFIG_HOME/linux-setup-local/zshrc"
+
+# Syntax highlighting must be sourced after widgets and other plugins.
+if [[ -r "$_dev_plugin_dir/zsh-syntax-highlighting/current/zsh-syntax-highlighting.zsh" ]]; then
+  source "$_dev_plugin_dir/zsh-syntax-highlighting/current/zsh-syntax-highlighting.zsh"
+fi
+unset _dev_plugin_dir
+return 0

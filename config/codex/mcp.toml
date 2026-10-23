@@ -1,0 +1,4 @@
+# Reference only. The installer registers this through `codex mcp add`.
+# Your existing Codex configuration is never copied into this repository.
+[mcp_servers.oh-my-posh]
+url = "https://ohmyposh.dev/api/mcp"

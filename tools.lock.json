@@ -1,0 +1,243 @@
+{
+  "schema_version": 1,
+  "tools": {
+    "fd": {
+      "repository": "https://github.com/sharkdp/fd",
+      "version": "v10.5.0",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "fd-v10.5.0-x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "761c72dc8e120d85b22292063be8a796e2eeb20eb3e4f38b8fa2343ccf3514a7"
+        },
+        "linux-aarch64": {
+          "name": "fd-v10.5.0-aarch64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch64-unknown-linux-musl.tar.gz",
+          "sha256": "d76c4317f7d5dba69f8a2a15856c90c777e7f0dd4e85f0de8c76de6992c374d4"
+        }
+      }
+    },
+    "fzf": {
+      "repository": "https://github.com/junegunn/fzf",
+      "version": "v0.74.5",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "fzf-0.74.5-linux_amd64.tar.gz",
+          "url": "https://github.com/junegunn/fzf/releases/download/v0.74.5/fzf-0.74.5-linux_amd64.tar.gz",
+          "sha256": "d47d7f882972c7d674dbbba998ffa4116e68379616ffac7695d0671e9a722c5f"
+        },
+        "linux-aarch64": {
+          "name": "fzf-0.74.5-linux_arm64.tar.gz",
+          "url": "https://github.com/junegunn/fzf/releases/download/v0.74.5/fzf-0.74.5-linux_arm64.tar.gz",
+          "sha256": "cf058001da21724a469b714a29cf4aab9cbe860d218a0d6c1b5b661efad7784c"
+        }
+      }
+    },
+    "zoxide": {
+      "repository": "https://github.com/ajeetdsouza/zoxide",
+      "version": "v0.10.0",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "zoxide-0.10.0-x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "2d93385b99f3e82cf2701609a1bffcad863fbeb75aa3fe7eb6be4d29be68b1ae"
+        },
+        "linux-aarch64": {
+          "name": "zoxide-0.10.0-aarch64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-aarch64-unknown-linux-musl.tar.gz",
+          "sha256": "f1f16c5d6298d63dee467eedea1cdcd8490e43e493bea43acd416dc9033ef641"
+        }
+      }
+    },
+    "bat": {
+      "repository": "https://github.com/sharkdp/bat",
+      "version": "v0.26.1",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "bat-v0.26.1-x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "0dcd8ac79732c0d5b136f11f4ee00e581440e16a44eab5b3105b611bbf2cf191"
+        },
+        "linux-aarch64": {
+          "name": "bat-v0.26.1-aarch64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-unknown-linux-musl.tar.gz",
+          "sha256": "6369242c584065f195fb20cb36fbd7cb63ae690605bbe89868a7596b596c2c23"
+        }
+      }
+    },
+    "yazi": {
+      "repository": "https://github.com/sxyazi/yazi",
+      "version": "v26.9.1",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "yazi-x86_64-unknown-linux-musl.zip",
+          "url": "https://github.com/sxyazi/yazi/releases/download/v26.9.1/yazi-x86_64-unknown-linux-musl.zip",
+          "sha256": "9b9c39decccf8cb0ff53a7d637d38f8a79d93bbd0099f4ea9c619ef6bb392f5d"
+        },
+        "linux-aarch64": {
+          "name": "yazi-aarch64-unknown-linux-musl.zip",
+          "url": "https://github.com/sxyazi/yazi/releases/download/v26.9.1/yazi-aarch64-unknown-linux-musl.zip",
+          "sha256": "dd569daecaae914185f295634109295ccd25c1b42b02eb89a74f651970024f2e"
+        }
+      },
+      "binaries": [
+        "yazi",
+        "ya"
+      ]
+    },
+    "ripgrep": {
+      "repository": "https://github.com/BurntSushi/ripgrep",
+      "version": "15.2.0",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "ripgrep-15.2.0-x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "33e15bcf1624b25cdd2a55813a47a2f95dbe126268203e76aa6a585d1e7b149c"
+        },
+        "linux-aarch64": {
+          "name": "ripgrep-15.2.0-aarch64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-unknown-linux-musl.tar.gz",
+          "sha256": "800b1e7206afe799dfb5a6901f23147cfaabe0e52210538100f61e86e1740915"
+        }
+      }
+    },
+    "lazygit": {
+      "repository": "https://github.com/jesseduffield/lazygit",
+      "version": "v0.66.2",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "lazygit_0.66.2_linux_x86_64.tar.gz",
+          "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.66.2/lazygit_0.66.2_linux_x86_64.tar.gz",
+          "sha256": "158efc9ddfa1241fab5fb3526bb442c8dc6c4b1904d73213b9e4e93e03c52034"
+        },
+        "linux-aarch64": {
+          "name": "lazygit_0.66.2_linux_arm64.tar.gz",
+          "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.66.2/lazygit_0.66.2_linux_arm64.tar.gz",
+          "sha256": "79a3161eeb642f0473e23db6341f7baabd4a5933e921a9c1167c5d5c765c41a4"
+        }
+      }
+    },
+    "eza": {
+      "repository": "https://github.com/eza-community/eza",
+      "version": "v0.23.5",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "eza_x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/eza-community/eza/releases/download/v0.23.5/eza_x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "e06eebab74b73d6b7d51a796a353824b001bea82df077706382e100815d28904"
+        },
+        "linux-aarch64": {
+          "name": "eza_aarch64-unknown-linux-gnu.tar.gz",
+          "url": "https://github.com/eza-community/eza/releases/download/v0.23.5/eza_aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "40b87ae8628aa2ff0f0d2dc24ab52f689631366385c3da630bae745671fd71ec"
+        }
+      }
+    },
+    "delta": {
+      "repository": "https://github.com/dandavison/delta",
+      "version": "0.20.1",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "delta-0.20.1-x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "69dcb4043f55c29118f408c6efd30115e0a4e0a6709253343b8c8fa814ab4a31"
+        },
+        "linux-aarch64": {
+          "name": "delta-0.20.1-aarch64-unknown-linux-gnu.tar.gz",
+          "url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "da7f4338f593572ff426ae153e0870e2fdc72729416eff551b40cdeb67940db8"
+        }
+      }
+    },
+    "jq": {
+      "repository": "https://github.com/jqlang/jq",
+      "version": "jq-1.8.2",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "jq-linux-amd64",
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64",
+          "sha256": "b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f"
+        },
+        "linux-aarch64": {
+          "name": "jq-linux-arm64",
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-arm64",
+          "sha256": "8b85c817833814ddca00a144c33705546355afccf0cf39b188f3cdb48b852309"
+        }
+      }
+    },
+    "oh-my-posh": {
+      "repository": "https://github.com/JanDeDobbeleer/oh-my-posh",
+      "version": "v31.9.1",
+      "platforms": {
+        "linux-x86_64": {
+          "name": "posh-linux-amd64",
+          "url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v31.9.1/posh-linux-amd64",
+          "sha256": "574074a4e84797180e0bda0d133da5f01fbda89ecdb450134c7e566b9a389212"
+        },
+        "linux-aarch64": {
+          "name": "posh-linux-arm64",
+          "url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v31.9.1/posh-linux-arm64",
+          "sha256": "a04e7aed0d233ac861161c0f3d4d70912b0747764fd5b10f6bd19c0b6510eb49"
+        }
+      }
+    },
+    "vp": {
+      "repository": "https://github.com/voidzero-dev/vite-plus",
+      "version": "v1.4.0",
+      "install_if_missing": true,
+      "binaries": [
+        "vp"
+      ],
+      "platforms": {
+        "linux-x86_64": {
+          "name": "vp-x86_64-unknown-linux-gnu.tar.gz",
+          "url": "https://github.com/voidzero-dev/vite-plus/releases/download/v1.4.0/vp-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "992558abc9621384434a22d80e06e117615680f14a3e17a58eb287fd30a07694"
+        },
+        "linux-aarch64": {
+          "name": "vp-aarch64-unknown-linux-gnu.tar.gz",
+          "url": "https://github.com/voidzero-dev/vite-plus/releases/download/v1.4.0/vp-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "8eee2d3e9a5bf8654f5150048f5a82b86d4f546c34c530f052545f5058db60de"
+        }
+      },
+      "preserve_bundle": true
+    },
+    "uv": {
+      "repository": "https://github.com/astral-sh/uv",
+      "version": "0.13.5",
+      "install_if_missing": true,
+      "binaries": [
+        "uv",
+        "uvx"
+      ],
+      "platforms": {
+        "linux-x86_64": {
+          "name": "uv-x86_64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-unknown-linux-musl.tar.gz",
+          "sha256": "57ef9d9ccb01fb1bd998df995b0dd221b52f7d7841fbea93f2d4463bf61fb7a9"
+        },
+        "linux-aarch64": {
+          "name": "uv-aarch64-unknown-linux-musl.tar.gz",
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-unknown-linux-musl.tar.gz",
+          "sha256": "7906c79adb21c81abd559841ba76bb1d9af9d791acac7a041b2972e03ae16538"
+        }
+      }
+    }
+  },
+  "plugins": {
+    "zsh-autosuggestions": {
+      "repository": "https://github.com/zsh-users/zsh-autosuggestions",
+      "version": "v0.7.1",
+      "commit": "e52ee8ca55bcc56a17c828767a3f98f22a68d4eb",
+      "url": "https://codeload.github.com/zsh-users/zsh-autosuggestions/tar.gz/e52ee8ca55bcc56a17c828767a3f98f22a68d4eb",
+      "sha256": "166fad9326c99904fd3b16b5d770efb4f5df39a674599e72bba8fc41636ab065"
+    },
+    "zsh-syntax-highlighting": {
+      "repository": "https://github.com/zsh-users/zsh-syntax-highlighting",
+      "version": "0.8.0",
+      "commit": "db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e",
+      "url": "https://codeload.github.com/zsh-users/zsh-syntax-highlighting/tar.gz/db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e",
+      "sha256": "874999413d147b7ad6776077e1b756d31d68284f9ef2ef240b33a4c842f0e1d8"
+    }
+  }
+}
