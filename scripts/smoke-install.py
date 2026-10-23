@@ -36,7 +36,7 @@ def main():
         run(ROOT / "install.sh", "--check")
         run(ROOT / "uninstall.sh", "--keep-tools", "--yes")
         # Retained rootless Zsh must load modules without the setup's .zshenv.
-        run("zsh", "-c", "zmodload zsh/parameter; autoload -Uz compinit; compinit -D")
+        run("zsh", "-c", "zmodload zsh/parameter && autoload -Uz compinit && compinit -i -D")
         run("uv", "--version")
         run("vp", "--version")
         run(ROOT / "install.sh", "--config-only", "--skip-mcp")

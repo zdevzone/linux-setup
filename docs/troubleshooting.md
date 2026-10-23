@@ -92,6 +92,12 @@ The development host contained dangling vendor completion links, including a
 Docker Desktop completion entry. The setup builds a filtered completion path
 without modifying `/usr`, so missing host targets are not loaded.
 
+The Ubuntu 24.04 CI runner also exposed completion directories that Zsh's security
+audit rejected. `compinit -i` skips those insecure directories, allowing completion
+initialization to finish without a prompt in noninteractive checks. It does not
+mark their contents trusted or change host permissions. If a completion is missing,
+inspect the relevant directory's ownership and permissions.
+
 Noninteractive shell probes also exposed ZLE messages from fzf restoring editor
 options without a terminal. The setup now initializes fzf's editor widgets only
 when standard input is a terminal. Interactive editor integrations belong in an interactive terminal;

@@ -14,7 +14,8 @@ bindkey '^[[3~' delete-char
 # A few distributions ship a dangling Docker Desktop completion symlink.
 # A valid completion earlier in fpath avoids errors without modifying /usr.
 autoload -Uz compinit
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+# Skip insecure host completion directories instead of prompting or trusting them.
+compinit -i -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 if (( $+commands[uv] )); then
