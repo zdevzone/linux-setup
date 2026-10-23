@@ -42,7 +42,9 @@ Node/Python runtimes, project dependencies, shell history, or databases.
 ```
 
 `--list` shows recorded program ownership and currently available cache IDs
-without changing files. Repeat `--remove NAME` for selected programs. Repeat
+without changing files. **Previously installed** means the program was migrated
+from the earlier setup without a recorded version; it does not mean outdated.
+Repeat `--remove NAME` for selected programs. Repeat
 `--cache NAME` for cache IDs shown by the tool. `--dry-run` only previews;
 `--yes` explicitly confirms a noninteractive operation and requires an explicit
 mode or cache selection. It does not choose which programs to remove. Review the

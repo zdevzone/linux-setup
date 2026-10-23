@@ -103,7 +103,7 @@ OS's repositories. This reproduces the
 configuration and pinned tools, rather than freezing the entire operating system.
 
 Vite+ and uv are **installed only when missing**. Existing installations and their
-versions are preserved, including Vite+'s XDG/legacy locations and uv's older
+versions are preserved, including Vite+'s current and older installation locations and uv's older
 Cargo location. The lockfile pins the versions used on fresh devices. A new Vite+
 installation retains its full release bundle and runs `vp env setup` to prepare
 its bootstrap dependencies, official environment, and runtime/package-manager
@@ -339,7 +339,7 @@ generated separately on each device.
 ./install.sh --preflight              # Check installation prerequisites
 ./install.sh --check                  # Same checks as linux-doctor
 ./install.sh --mcp-only               # Register the Oh My Posh MCP in existing Codex
-./install.sh --restore                # Legacy config restore; keep programs/caches/MCP
+./install.sh --restore                # Restore configs; keep programs/caches/MCP
 ./uninstall.sh --keep-tools           # Restore configuration; retain programs
 python3 -m unittest discover -s tests -v
 ```

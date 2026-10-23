@@ -21,6 +21,11 @@ def visible(value):
     return "".join(c if c.isprintable() else "?" for c in str(value))
 
 
+def version_label(item):
+    version = item.get("version", "")
+    return "Previously installed" if version == "legacy" else visible(version)
+
+
 def present(path):
     return path.exists() or path.is_symlink()
 
@@ -473,7 +478,7 @@ def main(argv=None):
         owned = {name for name, item in programs.items() if item.get("owned")}
         if args.list:
             for name, item in sorted(programs.items()):
-                print(f"{name:26} {'owned' if item.get('owned') else 'external/unknown':16} {item.get('version', '')}")
+                print(f"{name:26} {'owned' if item.get('owned') else 'external/unknown':16} {version_label(item)}")
             print("\nAvailable cache IDs (unchecked by default):")
             for name, item in options.items():
                 print(name + ": " + item["label"] + " — " + ", ".join(map(str, item["paths"])))
@@ -499,7 +504,7 @@ def main(argv=None):
                 if mode == "all":
                     remove = owned
                 elif mode == "select":
-                    remove = set(choose("Checked programs will be REMOVED", [(n + " " + programs[n].get("version", ""), n) for n in sorted(owned)], multi=True))
+                    remove = set(choose("Checked programs will be REMOVED", [(n + " " + version_label(programs[n]), n) for n in sorted(owned)], multi=True))
                 cache_ids = choose("Checked caches will be DELETED", [(n + ": " + item["label"] + " — " + ", ".join(map(str, item["paths"])), n) for n, item in options.items()], multi=True)
             invalid_caches = set(cache_ids) - set(options)
             if invalid_caches:
