@@ -5,6 +5,14 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export LINUX_SETUP_DIR="$XDG_CONFIG_HOME/linux-setup"
 export DEV_SETUP_DIR="$LINUX_SETUP_DIR" # Compatibility for existing private aliases.
+export DEV_DIR="${DEV_DIR:-$HOME/github}"
+export PROJECTS_DIR="${PROJECTS_DIR:-$HOME/projects}"
+
+# check if the dir exists and is a directory, if not create it
+for dir in "$DEV_DIR" "$PROJECTS_DIR"; do
+  [[ -d "$dir" ]] || mkdir -p -- "$dir"
+done
+
 typeset -U path fpath module_path
 path=("$HOME/.local/bin" "$LINUX_SETUP_DIR/bin" $path)
 typeset _dev_uv_dir
