@@ -70,6 +70,7 @@ for selection keys, automation, shared dependencies, and recovery.
 ## Documentation
 
 - [Installation, prerequisites, supported systems, and migration](docs/installation.md)
+- [Developer workflow and project command reference](docs/developer-workflow.md)
 - [Selective uninstall, cache choices, and recovery](docs/uninstall.md)
 - [Troubleshooting and development findings](docs/troubleshooting.md)
 - [Development, tests, and maintaining pinned versions](docs/development.md)
@@ -166,6 +167,8 @@ reliably without knowing the terminal emulator.
 | `kip PORT [PORT ...]` | Confirm and send SIGTERM to the listeners on explicit ports |
 | `serve [PORT] [DIR]` | Serve a directory on localhost (default port 8000) |
 | `db [ENV_FILE]` / `dbm` | Interactive PostgreSQL database/schema manager |
+| `dev-check [PATH]` | Read-only project dependency, Git, runtime, and Docker checks |
+| `dev-browser doctor` | Check a project's Playwright/browser setup |
 | `pathlist` | Print one PATH entry per line |
 | `linux-doctor` / `dev-doctor` | Check installed tools and shell integration |
 | `linuxsetup` / `devsetup` | Enter this repository |
@@ -184,6 +187,21 @@ tmux keeps **Ctrl-B** as the prefix. After the prefix, press `|` or `-` to split
 `h/j/k/l` to switch panes, `c` for a new window, `r` to reload config, and `d` to
 detach. `work` names sessions by project directory plus a short path hash, so two
 projects with the same directory name do not collide. Existing sessions are kept.
+
+## Project checks and browser tests
+
+```sh
+dev-check                     # Inspect this checkout; --network opts into registry probes
+dev-browser doctor            # Inspect the project's Playwright/browser setup
+dev-browser install           # Download its pinned Chromium version
+dev-browser run -- pnpm test:e2e
+```
+
+On Ubuntu/Debian, `dev-browser install --user-deps` can also extract required
+APT libraries into a user cache without sudo. `run` applies those libraries only
+to its child command. Project runtime versions, task names, dependencies, and
+credentials remain project-owned. See the [developer workflow guide](docs/developer-workflow.md)
+for the full recipe, optional aliases, environment checks, and database tools.
 
 ## Ports and local servers
 
@@ -222,9 +240,9 @@ server. It uses the database role and permissions in the selected connection.
 The server's `postgres` database is used for database-level operations by default.
 Your role needs CONNECT there and the appropriate CREATE/ownership privileges.
 
-Recognized variables include `DB_URL`, `DATABASE_URL`, `TEST_DB_URL`, `DB_URLS`,
-and `DATABASE_URLS`. Use `--var NAME` for any other name. Multiple connections can
-be a JSON array or a named JSON object on a single line:
+Recognized variables include `DB_URL`, `DATABASE_URL`, `TEST_DB_URL`,
+`TEST_DATABASE_URL`, `DB_URLS`, and `DATABASE_URLS`. Use `--var NAME` for any other
+name. Multiple connections can be a JSON array or a named JSON object on a single line:
 
 ```dotenv
 DATABASE_URL=postgresql://app:password@localhost:5432/my_project

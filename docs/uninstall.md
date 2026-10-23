@@ -37,6 +37,7 @@ Node/Python runtimes, project dependencies, shell history, or databases.
 ./uninstall.sh --keep-tools
 ./uninstall.sh --remove bat --remove fd
 ./uninstall.sh --keep-tools --cache setup-downloads --dry-run
+./uninstall.sh --keep-tools --cache browser-deps --dry-run
 ./uninstall.sh --all-tools --dry-run
 ./uninstall.sh --all-tools
 ```
@@ -58,6 +59,7 @@ owned by the setup:
 | --- | --- |
 | `setup-downloads` | Verified archives downloaded by the installer |
 | `setup-test-artifacts` | Extracted disposable PostgreSQL development-test binaries, if present |
+| `browser-deps` | Libraries and fonts extracted by `dev-browser install --user-deps`, if present |
 | `zsh` | Known completion dump files; shell history is preserved |
 | `uv` | The known uv dependency cache; installed Python versions and tools are preserved |
 | `oh-my-posh` | Known prompt cache directory |
@@ -69,6 +71,13 @@ tool storage is deliberately not classified as disposable cache. Yazi's preview
 cache is not offered because its temporary/configured location cannot be inferred
 safely from the setup's ownership records; see its
 [cache configuration](https://yazi-rs.github.io/docs/configuration/yazi/#cache_dir).
+
+`browser-deps` refers only to
+`${XDG_CACHE_HOME:-~/.cache}/linux-setup/browser-deps`. It stays unchecked by
+default and can be removed independently of installed programs. Playwright's
+`ms-playwright` browser cache is preserved. Removing these extracted dependencies
+may require running `dev-browser install --user-deps` again for projects that use
+them; no legacy browser-cache paths are inferred or migrated for removal.
 
 For a selected uv cache, the uninstaller runs `uv cache clean` against the listed
 directory before removing uv itself. This coordinates access with other uv

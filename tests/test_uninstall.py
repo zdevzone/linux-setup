@@ -146,6 +146,48 @@ class UninstallTests(unittest.TestCase):
         self.assertIn("bat", self.deploy.state["programs"])
         self.assertTrue(report["unresolved"])
 
+    def test_browser_cache_is_available_only_at_its_current_exact_path(self):
+        cache = uninstall.setup.CACHE / "browser-deps"
+        legacy = uninstall.setup.CACHE.parent / "dev-setup/browser-deps"
+        self.assertNotIn("browser-deps", uninstall.cache_options({}))
+        legacy.mkdir(parents=True)
+        self.assertNotIn("browser-deps", uninstall.cache_options({}))
+        cache.mkdir()
+        self.assertEqual(uninstall.cache_options({})["browser-deps"]["paths"], [cache])
+        self.assertTrue(uninstall.safe_cache_path(cache, "browser-deps"))
+        for other in [legacy, self.root / "cache/ms-playwright", cache / "nested", uninstall.setup.CACHE]:
+            self.assertFalse(uninstall.safe_cache_path(other, "browser-deps"))
+        selected = {"browser-deps": [str(legacy)]}
+        self.assertEqual(uninstall.canonical_cache_paths(selected), selected)
+
+    def test_program_removal_keeps_browser_caches_when_unselected(self):
+        self.program("fd")
+        cache = uninstall.setup.CACHE / "browser-deps"
+        browsers = self.root / "cache/ms-playwright"
+        cache.mkdir()
+        browsers.mkdir()
+        report = uninstall.apply_plan(self.deploy, {"fd"}, {})
+        self.assertTrue(cache.exists())
+        self.assertTrue(browsers.exists())
+        self.assertEqual(report["unresolved"], [])
+        self.assertEqual(report["removed"], ["fd"])
+
+    def test_browser_cache_selection_preserves_programs_and_playwright_browsers(self):
+        program, link, _ = self.program("vp")
+        cache = uninstall.setup.CACHE / "browser-deps"
+        browsers = self.root / "cache/ms-playwright"
+        cache.mkdir()
+        (cache / "library").write_text("fixture library")
+        browsers.mkdir()
+        (browsers / "browser").write_text("fixture browser")
+        report = uninstall.apply_plan(self.deploy, set(), {"browser-deps": [str(cache)]})
+        self.assertFalse(cache.exists())
+        self.assertTrue(program.exists())
+        self.assertTrue(link.exists())
+        self.assertEqual((browsers / "browser").read_text(), "fixture browser")
+        self.assertEqual(report["unresolved"], [])
+        self.assertEqual(report["removed"], ["browser-deps: " + str(cache)])
+
     def test_cache_symlink_and_parent_escape_are_refused(self):
         outside = self.root / "important"
         outside.mkdir()

@@ -107,6 +107,7 @@ def cache_options(programs):
     candidates = {
         "setup-downloads": {"paths": [setup_cache / "downloads"], "label": "Verified setup download archives", "shared": False},
         "setup-test-artifacts": {"paths": [setup_cache / "postgres-test"], "label": "Disposable PostgreSQL development-test binaries", "shared": False},
+        "browser-deps": {"paths": [setup.CACHE / "browser-deps"], "label": "Extracted browser libraries and fonts (shared by projects)", "shared": True},
     }
     owned = {name for name, item in programs.items() if item.get("owned")}
     for name, directory in [("uv", "uv"), ("oh-my-posh", "oh-my-posh"), ("bat", "bat")]:
@@ -159,6 +160,7 @@ def safe_cache_path(path, cache_id=None):
         return False
     exact = {
         "setup-downloads": setup.CACHE / "downloads", "setup-test-artifacts": setup.CACHE / "postgres-test",
+        "browser-deps": setup.CACHE / "browser-deps",
         "uv": root / "uv", "oh-my-posh": root / "oh-my-posh", "bat": root / "bat",
     }
     if cache_id == "zsh":
