@@ -160,7 +160,7 @@ def load_connections(path, variables=None):
             urls = re.split(r"\s+|,(?=postgres(?:ql)?://)", value)
             connections += [parse_connection(key if len(urls) == 1 else f"{key}.{i + 1}", url) for i, url in enumerate(urls)]
     if not connections:
-        raise DBError("No PostgreSQL URLs found. Set DB_URL, DATABASE_URL, DB_URLS, or use --var NAME")
+        raise DBError("No PostgreSQL URLs found. Set DB_URL, DATABASE_URL, TEST_DB_URL, TEST_DATABASE_URL, DB_URLS, or use --var NAME")
     return connections
 
 
@@ -422,7 +422,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("file", nargs="?", default=".env", help="Dotenv file (default: .env)")
     parser.add_argument("-f", "--env-file", help="Explicit dotenv file path")
-    parser.add_argument("--var", action="append", help="Read only this variable; repeat for multiple variables")
+    parser.add_argument("--var", action="append", help="Read only this variable; repeat for multiple variables. By default, discover URL names including DB_URL, DATABASE_URL, TEST_DB_URL, and TEST_DATABASE_URL")
     parser.add_argument("--maintenance-db", default="postgres", help="Database for server-level operations")
     parser.add_argument("--connections", action="store_true", help="List redacted connection labels without connecting")
     args = parser.parse_args(argv)

@@ -34,12 +34,18 @@ def main():
             subprocess.run(list(map(str, command)), cwd=ROOT, env=environment, check=True)
         run(ROOT / "install.sh", "--skip-mcp")
         run(ROOT / "install.sh", "--check")
+        run("dev-check", "--help")
+        run("dev-browser", "--help")
         run(ROOT / "uninstall.sh", "--keep-tools", "--yes")
+        for helper in ("dev-check", "dev-browser"):
+            assert not (root / ".local/bin" / helper).is_symlink(), "Configuration uninstall left " + helper
         # Retained rootless Zsh must load modules without the setup's .zshenv.
         run("zsh", "-c", "zmodload zsh/parameter && autoload -Uz compinit && compinit -i -D")
         run("uv", "--version")
         run("vp", "--version")
         run(ROOT / "install.sh", "--config-only", "--skip-mcp")
+        run("dev-check", "--help")
+        run("dev-browser", "--help")
         cache = root / ".cache/bat"
         cache.mkdir(parents=True, exist_ok=True)
         (cache / "smoke-cache").write_text("disposable test cache")

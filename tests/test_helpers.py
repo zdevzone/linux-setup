@@ -33,6 +33,12 @@ class DotenvTests(unittest.TestCase):
         connections = self.load('UNRELATED=${NOT_DEFINED}\nCONNECTION=postgres://localhost/app\n', ["CONNECTION"])
         self.assertEqual(connections[0].database, "app")
 
+    def test_both_test_database_url_names_are_discovered_by_default(self):
+        connections = self.load('TEST_DB_URL=postgresql://fixture:synthetic-secret@localhost/legacy_test\nTEST_DATABASE_URL=postgresql://fixture:synthetic-secret@localhost/app_test\n')
+        self.assertEqual([c.name for c in connections], ["TEST_DB_URL", "TEST_DATABASE_URL"])
+        self.assertEqual([c.database for c in connections], ["legacy_test", "app_test"])
+        self.assertTrue(all("synthetic-secret" not in c.label for c in connections))
+
     def test_commands_are_not_executed(self):
         with tempfile.TemporaryDirectory() as temp:
             marker = Path(temp) / "executed"
