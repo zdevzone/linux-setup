@@ -1,5 +1,7 @@
 # Troubleshooting and development findings
 
+[Documentation](README.md) · [Project overview](../README.md)
+
 Start with `./install.sh --preflight` for installation prerequisites and
 `linux-doctor` for installed tools and shell integrations. Run checks as the user
 whose terminal is being configured.

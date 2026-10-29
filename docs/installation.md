@@ -1,5 +1,7 @@
 # Installation and migration
 
+[Documentation](README.md) · [Project overview](../README.md)
+
 `linux-setup` installs a repeatable Linux terminal configuration and a pinned set
 of command-line tools. It links configuration to this checkout, so keep the
 checkout in a persistent location.
@@ -31,6 +33,7 @@ cd ~/linux-setup
 ./install.sh --preflight
 ./install.sh --dry-run
 ./install.sh
+export PATH="$HOME/.local/bin:$PATH"
 exec zsh
 linux-doctor
 ```
@@ -65,6 +68,14 @@ current user's home directory.
 The [README tool table](../README.md#included-tools) lists the included programs.
 Already available base programs are reused. Existing Vite+ and uv installations
 are preserved. Fresh Vite+/uv installations use the lockfile versions.
+
+Zsh is installed automatically when it is missing during a normal `./install.sh`
+run on Ubuntu/Debian. Its packages and runtime files stay in your user directory,
+with an executable entry point at `~/.local/bin/zsh`; no sudo or login-shell change
+is needed. An existing Zsh is reused. `--config-only` deliberately skips all tool
+installation, including Zsh. At completion, the installer prints an `exec` command
+with the full Zsh path so it also works before your current shell has added
+`~/.local/bin` to `PATH`.
 
 The PostgreSQL dependency is the `psql` client only. Installing it does not create
 a database cluster or start a server. Your applications retain responsibility for

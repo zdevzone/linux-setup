@@ -50,6 +50,7 @@ fi
 
 source "$LINUX_SETUP_DIR/config/zsh/aliases.zsh"
 source "$LINUX_SETUP_DIR/config/zsh/functions.zsh"
+source "$LINUX_SETUP_DIR/config/zsh/command-picker.zsh"
 
 typeset _dev_plugin_dir="$XDG_DATA_HOME/linux-setup/plugins"
 if [[ -r "$_dev_plugin_dir/zsh-autosuggestions/current/zsh-autosuggestions.zsh" ]]; then

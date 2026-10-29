@@ -1,5 +1,7 @@
 # Developer workflow
 
+[Documentation](README.md) · [Project overview](../README.md)
+
 Run project commands from the relevant checkout. This setup supplies shared
 tools; each project keeps its own runtime version, package manager, dependencies,
 tasks, and credentials.
@@ -129,15 +131,65 @@ the interactive manager also offers database changes with confirmation. Keep
 test URLs pointed at disposable databases. Installing `psql` does not start a
 database server.
 
-## Optional personal shortcuts
+## Discover and use custom commands
 
-Add only the shortcuts you want to your private
-`~/.config/linux-setup-local/zshrc`, then open a new shell:
+Press **Alt+X** (both lowercase and uppercase x work) or run `devcommands` to open
+the fzf picker. Type part of a shortcut, its description, or its full command.
+The preview includes the full definition, even for multiline functions. Ctrl-/
+toggles the preview. Enter inserts the selection into the editable prompt and
+does not execute it. An alias inserts its expansion; a function inserts its name
+and a trailing space so you can supply arguments. Selecting replaces the current
+line; Escape or Ctrl-C preserves the line and cursor. The binding works in Emacs
+and vi keymaps. If your terminal uses Alt+X for a menu, use Escape then x or the
+`devcommands` command.
 
 ```sh
-alias dcheck='dev-check'
-alias dbr='dev-browser'
-alias vr='vp run'
+devcommands docker              # Open with an initial search
+devhelp                         # Print the current reference without fzf
+devhelp pnpm                    # Filter the printed reference by text
+```
+
+The picker uses live shell definitions and description comments from
+`config/zsh/aliases.zsh`, `functions.zsh`, `command-picker.zsh`, and private
+`linux-setup-local/zshrc` / `zshenv`. It excludes internal helper functions and
+shortcuts that were not loaded, including conditional aliases for absent tools.
+It does not call any of the commands to build the list. Regular aliases and named
+functions declared in these files are supported; dynamically generated commands
+and commands in other sourced files are outside this catalogue.
+
+Included shortcuts:
+
+| Group | Examples |
+| --- | --- |
+| Project scripts and dependencies | `pscripts`, `pd`, `pb`, `pt`, `pcheck`, `pr TASK`, `pi`, `pif`, `pa`, `pad`, `px`, `pfilter` |
+| Vite+ | `vpi`, `vr TASK`, `vcheck`, `vfmt`, `vtest`, `vwatch` |
+| Rust and Laravel | `cgb`, `cgc`, `cgt`, `cgr`, `cgl`, `cgrelease`, `art`, `arts`, `artt`, `sail` |
+| Git and GitHub | `gfind TEXT`, `gbranches`, `gconflicts`, `gpull`, `ghprs`, `ghpr`, `ghchecks`, `ghruns` |
+| Containers | `dctx`, `dctxs`, `duse`, `dpsa`, `dccheck`, `dcservices`, `dcup`, `dcstop`, `dclog`, `dsh`, `dcsh` |
+| Kubernetes and Terraform | `kctx`, `kcontexts`, `kuse`, `kpods`, `klogs`, `kdesc`, `tfinit`, `tfvalidate`, `tffmtcheck`, `tfplan` |
+| Host and network | `disks`, `mem`, `dus`, `listens`, `ipbrief`, `svcfailed`, `jerrors`, `junit`, `httpcheck`, `sshtunnel` |
+| PostgreSQL and JSON | `pgconnect SERVICE`, `pg-local`, `pg-remote`, `pg-bingo`, `jpretty`, `jcompact` |
+| AI agents and project checks | `cx`, `cxr`, `cxc`, `cxe`, `cld`, `cldr`, `cldc`, `dcheck`, `dbr` |
+
+Project script names must exist in `package.json`; use `pscripts` to inspect them.
+Direct Vite+ tools can bypass a project's wrappers, so use `pcheck` and `pt` for
+its full check/test scripts. Container commands use the active Docker context;
+`dsh CONTAINER [SHELL]` and `dcsh SERVICE [SHELL]` default to `sh`. Existing Docker
+reset shortcuts and `dc` help remain available, including their volume-deleting
+operations. PostgreSQL shortcuts use profiles you configure privately in
+`~/.pg_service.conf`, with normal password prompt or `~/.pgpass` authentication.
+Kubernetes, Terraform, GitHub, Docker, language tools, and agent CLIs must be
+installed separately if missing; adding an alias does not install its target.
+
+For private additions, put a comment immediately above each alias or function
+in `~/.config/linux-setup-local/zshrc`, then run `reload`:
+
+```sh
+# Follow this project's API logs.
+alias apilogs='docker compose logs --follow api'
+
+# Check the current project's package scripts.
+project_scripts() { command jq '.scripts // {}' package.json; }
 ```
 
 Keep credentials in the appropriate project's ignored files or configured

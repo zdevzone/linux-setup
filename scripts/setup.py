@@ -636,7 +636,13 @@ def main():
     install_config(deploy)
     if not args.skip_mcp:
         install_mcp(deploy)
-    print(f"\nInstalled from {ROOT}\nBackups: {STATE / 'backups'}\nRun: exec zsh\nThen: dev-doctor")
+    print(f"\nInstalled from {ROOT}\nBackups: {STATE / 'backups'}")
+    zsh = shutil.which("zsh")
+    if zsh:
+        # The calling shell may not yet have ~/.local/bin in its PATH.
+        print(f"Run: exec {shlex.quote(zsh)}\nThen: dev-doctor")
+    else:
+        print("Zsh is not installed. Run ./install.sh without --config-only to install missing tools.")
     return 0
 
 

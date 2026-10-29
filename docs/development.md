@@ -1,5 +1,7 @@
 # Development and maintenance
 
+[Documentation](README.md) · [Project overview](../README.md)
+
 Portable configuration lives in `config/`, executable helpers in `bin/`, and
 their implementation in `scripts/`. Machine-specific additions belong outside
 the checkout in `~/.config/linux-setup-local/`.

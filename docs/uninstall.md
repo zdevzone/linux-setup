@@ -1,5 +1,7 @@
 # Uninstall programs, configuration, and caches
 
+[Documentation](README.md) · [Project overview](../README.md)
+
 Run the uninstaller from the checkout:
 
 ```sh

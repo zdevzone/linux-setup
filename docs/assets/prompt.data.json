@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "env": {
+    "OS": "ubuntu",
+    "UserName": "dev",
+    "HostName": "workstation",
+    "PWD": "~/linux-setup",
+    "AbsolutePWD": "/home/dev/linux-setup",
+    "PSWD": "~/linux-setup",
+    "Folder": "linux-setup",
+    "Root": false,
+    "WSL": false,
+    "Shell": "zsh",
+    "Code": 0
+  },
+  "segments": {
+    "os": {
+      "enabled": true,
+      "data": {
+        "Icon": {
+          "$markup": ""
+        }
+      }
+    },
+    "session": {
+      "enabled": true,
+      "data": {
+        "SSHSession": false,
+        "UserName": "dev"
+      }
+    },
+    "path": {
+      "enabled": true,
+      "data": {
+        "Path": "~/linux-setup",
+        "Location": "~/linux-setup",
+        "Writable": true
+      }
+    },
+    "git": {
+      "enabled": true,
+      "data": {
+        "HEAD": {
+          "$markup": " main"
+        },
+        "Ahead": 0,
+        "Behind": 0,
+        "BranchStatus": {
+          "$markup": ""
+        },
+        "StashCount": 0,
+        "Working": {
+          "Changed": false
+        },
+        "Staging": {
+          "Changed": false
+        }
+      }
+    },
+    "executiontime": {
+      "enabled": true,
+      "data": {
+        "FormattedMs": "0ms",
+        "Ms": 0
+      }
+    },
+    "time": {
+      "enabled": true,
+      "data": {
+        "CurrentDate": "2026-01-01T10:24:00+03:00",
+        "Format": "15:04:05"
+      }
+    },
+    "status": {
+      "enabled": true,
+      "data": {
+        "Error": false,
+        "Meaning": "0"
+      }
+    },
+    "text": {
+      "enabled": true,
+      "data": {}
+    },
+    "root": {
+      "enabled": false,
+      "data": {}
+    },
+    "battery": {
+      "enabled": false,
+      "data": {}
+    },
+    "python": {
+      "enabled": false,
+      "data": {}
+    }
+  }
+}

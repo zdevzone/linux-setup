@@ -1,9 +1,11 @@
+from contextlib import ExitStack
 import hashlib
 import importlib.util
 import io
 import json
 import os
 from pathlib import Path
+import shlex
 import subprocess
 import sys
 import tarfile
@@ -149,6 +151,86 @@ class ArchiveTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "Checksum mismatch"):
                     setup.download(source.as_uri(), "0" * 64, "tool")
                 self.assertFalse(list((root / "cache/downloads").glob("*.part")))
+
+
+class BaseToolTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name) / "fresh home"
+        self.root.mkdir()
+        stack = ExitStack()
+        self.addCleanup(stack.close)
+        for name, path in {
+            "HOME": self.root,
+            "CONFIG": self.root / ".config",
+            "DATA": self.root / ".local/share/linux-setup",
+            "STATE": self.root / ".local/state/linux-setup",
+            "CACHE": self.root / ".cache/linux-setup",
+            "BIN": self.root / ".local/bin",
+        }.items():
+            stack.enter_context(patch.object(setup, name, path))
+        self.deploy = setup.Deployment()
+
+    def test_missing_zsh_installs_rootless_runtime_and_records_ownership(self):
+        runtime = setup.DATA / "base/zsh/runtime"
+
+        def installation_step(command, **kwargs):
+            if command[:2] == ["apt-get", "-s"]:
+                self.assertEqual(command[-1], "zsh")
+                return Mock(stdout="Inst zsh-common (5.9-1 repo [all])\nInst zsh (5.9-1 repo [amd64])\n")
+            if command[:2] == ["apt-get", "download"]:
+                self.assertEqual(set(command[2:]), {"zsh=5.9-1", "zsh-common=5.9-1"})
+                (Path(kwargs["cwd"]) / "zsh.deb").write_text("test package")
+                return Mock()
+            if command[:2] == ["dpkg-deb", "-x"]:
+                self.assertEqual(command[-1], runtime)
+                binary = runtime / "usr/bin/zsh"
+                binary.parent.mkdir(parents=True)
+                binary.write_text('#!/bin/sh\nprintf "%s\\n" "$ZDOTDIR" "$@"\n')
+                binary.chmod(0o755)
+                (runtime / "usr/lib/x86_64-linux-gnu/zsh/5.9").mkdir(parents=True)
+                (runtime / "usr/share/zsh/functions/Completion").mkdir(parents=True)
+                return Mock()
+            self.fail("Unexpected command: " + repr(command))
+
+        lookup = lambda name: None if name == "zsh" else "/usr/bin/" + name
+        with patch.object(setup.shutil, "which", side_effect=lookup), patch.object(setup, "run", side_effect=installation_step):
+            setup.install_base(self.deploy)
+        entry = setup.BIN / "zsh"
+        self.assertTrue(entry.is_symlink())
+        self.assertTrue(os.access(entry, os.X_OK))
+        bootstrap = setup.DATA / "base/zsh/bin/zsh-bootstrap"
+        startup = (bootstrap / ".zshenv").read_text()
+        self.assertIn(shlex.quote(str(runtime / "usr/lib/x86_64-linux-gnu/zsh/5.9")), startup)
+        self.assertIn(shlex.quote(str(runtime / "usr/share/zsh/functions/Completion")), startup)
+        result = subprocess.run([str(entry), "--version", "argument with spaces"], check=True, capture_output=True, text=True)
+        self.assertEqual(result.stdout.splitlines(), [str(bootstrap), "--version", "argument with spaces"])
+        item = self.deploy.state["programs"]["zsh"]
+        self.assertTrue(item["owned"])
+        self.assertEqual(item["version"], "distro")
+        self.assertEqual(item["packages"], {"zsh": "5.9-1", "zsh-common": "5.9-1"})
+        self.assertEqual(self.deploy.state["links"][str(entry)]["program"], "zsh")
+
+    def test_existing_zsh_is_reused_without_package_operations(self):
+        with patch.object(setup.shutil, "which", side_effect=lambda name: "/usr/bin/" + name), patch.object(setup, "run") as run:
+            setup.install_base(self.deploy)
+        run.assert_not_called()
+        item = self.deploy.state["programs"]["zsh"]
+        self.assertFalse(item["owned"])
+        self.assertEqual(item["executable"], "/usr/bin/zsh")
+        self.assertFalse((setup.BIN / "zsh").exists())
+
+    def test_default_install_prints_zsh_path_for_the_calling_shell(self):
+        def install_base(deploy):
+            entry = setup.BIN / "zsh"
+            entry.write_text("#!/bin/sh\nexit 0\n")
+            entry.chmod(0o755)
+
+        with patch.object(sys, "argv", ["setup.py", "--skip-mcp"]), patch.dict(os.environ, {"PATH": "/usr/bin:/bin"}), patch("preflight.check", return_value=[]), patch.object(setup, "migrate_legacy"), patch.object(setup, "install_base", side_effect=install_base) as base, patch.object(setup, "install_tools"), patch.object(setup, "install_config"), patch("sys.stdout", new_callable=io.StringIO) as output:
+            self.assertEqual(setup.main(), 0)
+        base.assert_called_once()
+        self.assertIn("Run: exec " + shlex.quote(str(setup.BIN / "zsh")), output.getvalue())
 
 
 class ManagerTests(unittest.TestCase):
